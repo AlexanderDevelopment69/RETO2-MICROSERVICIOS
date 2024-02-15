@@ -20,9 +20,15 @@ public class HospitalController {
     @PostMapping("/registrar")
     public ResponseEntity<String> registrarHospital(@RequestBody Hospital hospital) {
         try {
-            hospitalService.registrarHospital(hospital.getIdDistrito(), hospital.getNombre(),
-                    hospital.getAntiguedad(), hospital.getArea(), hospital.getIdSede(), hospital.getIdGerente(),
-                    hospital.getIdCondicion());
+            Long idDistrito = hospital.getDistrito().getIdDistrito();
+            Long idSede = hospital.getSede().getIdSede();
+            Long idGerente = hospital.getGerente().getIdGerente();
+            Long idCondicion = hospital.getCondicion().getIdCondicion();
+
+
+
+            hospitalService.registrarHospital(idDistrito, hospital.getNombre(),
+                    hospital.getAntiguedad(), hospital.getArea(), idSede, idGerente, idCondicion);
             return ResponseEntity.status(HttpStatus.CREATED).body("Hospital registrado correctamente.");
         } catch (IllegalArgumentException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Los datos del hospital son inválidos.");
@@ -34,9 +40,14 @@ public class HospitalController {
     @PutMapping("/actualizar")
     public ResponseEntity<String> actualizarHospital(@RequestBody Hospital hospital) {
         try {
-            hospitalService.actualizarHospital(hospital.getIdDistrito(), hospital.getNombre(),
-                    hospital.getAntiguedad(), hospital.getArea(), hospital.getIdSede(), hospital.getIdGerente(),
-                    hospital.getIdCondicion());
+            // Acceder a los ID de las entidades relacionadas
+            Long idDistrito = hospital.getDistrito().getIdDistrito();
+            Long idSede = hospital.getSede().getIdSede();
+            Long idGerente = hospital.getGerente().getIdGerente();
+            Long idCondicion = hospital.getCondicion().getIdCondicion();
+
+            hospitalService.actualizarHospital(idDistrito, hospital.getNombre(),
+                    hospital.getAntiguedad(), hospital.getArea(), idSede, idGerente, idCondicion);
             return ResponseEntity.status(HttpStatus.OK).body("Hospital actualizado correctamente.");
         } catch (IllegalArgumentException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Los datos del hospital son inválidos.");
@@ -44,6 +55,7 @@ public class HospitalController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al actualizar el hospital.");
         }
     }
+
 
     @DeleteMapping("/eliminar/{idHospital}")
     public ResponseEntity<String> eliminarHospital(@PathVariable Long idHospital) {

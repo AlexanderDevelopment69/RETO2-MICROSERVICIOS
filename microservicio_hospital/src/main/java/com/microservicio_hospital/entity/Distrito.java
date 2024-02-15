@@ -12,11 +12,17 @@ public class Distrito {
     @Column(name = "id_distrito")
     private Long idDistrito;
 
+    @ManyToOne
+    @JoinColumn(name = "id_provincia")
+    private Provincia provincia;
+
     @Column(name = "desc_distrito")
     private String descDistrito;
 
     @Column(name = "fecha_registro",columnDefinition = "TIMESTAMP DEFAULT SYSTIMESTAMP")
     private Date fechaRegistro;
+
+
 
 
 }
